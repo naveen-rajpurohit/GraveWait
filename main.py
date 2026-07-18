@@ -462,7 +462,6 @@ class Game:
         self.world.draw_front(f)
         self.world.draw_dark(f)
         ui.hud(f, self)
-        ui.controls_hint(f)
         ui.toasts(f, self, now)
         if self.npc and self.npc.present and not self.npc.dialogue_open:
             ui.npc_hint(f, self.npc, now)
@@ -470,6 +469,7 @@ class Game:
             ui.dialogue_cloud(f, self.npc)
         if self.scene == TITLE:
             ui.title_overlay(f, self, now)
+            ui.controls_hint(f)          # controls only on the start screen
         elif self.scene == DEAD:
             ui.dead_overlay(f, self, now)
         elif self.scene == WIN:
