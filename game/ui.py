@@ -127,13 +127,29 @@ def title_overlay(surf, game, now):
     _dim(surf, 120)
     cx = config.VIEW_W // 2
     cy = config.VIEW_H // 2
-    text(surf, "G R A V E W A I T", (cx, cy - 30), ORANGE, F_HUGE, anchor="center")
+    text(surf, "G R A V E W A I T", (cx, cy - 32), ORANGE, F_HUGE, anchor="center")
     if _blink(now):
-        text(surf, "PRESS SPACE TO START", (cx, cy + 2), INK, F_BIG, anchor="center")
-    text(surf, "A/D move   W jump x2   SPACE dash   S crouch   L sword   P magic   ENTER talk/exit",
-         (cx, cy + 24), DIM, F_SMALL, anchor="center")
+        text(surf, "PRESS SPACE TO START", (cx, cy - 2), INK, F_BIG, anchor="center")
+    # mode selector, toggled with A/D
+    easy_c = GOLD if game.mode == "easy" else DIM
+    hard_c = GOLD if game.mode == "hard" else DIM
+    text(surf, "MODE:", (cx - 52, cy + 16), DIM, F_MED, anchor="center")
+    text(surf, ("> EASY <" if game.mode == "easy" else "EASY"),
+         (cx - 8, cy + 16), easy_c, F_MED, anchor="center")
+    text(surf, ("> HARD <" if game.mode == "hard" else "HARD"),
+         (cx + 52, cy + 16), hard_c, F_MED, anchor="center")
+    text(surf, "A/D changes mode", (cx, cy + 30), (96, 90, 110), F_SMALL,
+         anchor="center")
     text(surf, f"wins {game.save.wins}   best {game.save.high_score}",
-         (cx, cy + 38), DIM, F_SMALL, anchor="center")
+         (cx, cy + 42), DIM, F_SMALL, anchor="center")
+
+
+def controls_hint(surf):
+    """Tiny always-on reminder along the bottom: helps, never shouts."""
+    text(surf,
+         "A/D move  W jump2  SPACE dash  S crouch  L sword  P magic  "
+         "ENTER talk  M mute  Q(hold) quit",
+         (4, config.VIEW_H - 10), (96, 90, 110), F_SMALL, shadow=False)
 
 
 def dead_overlay(surf, game, now):

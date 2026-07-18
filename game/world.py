@@ -37,7 +37,7 @@ class World:
         straight off the ground (double jump ~86px) or by hopping up from the
         platform it stacks on (step <=52px, horizontal offset <=40px)."""
         W = config.VIEW_W
-        n = max(4, W // 190)
+        n = rng.randint(4, 6)
         plats = []
         slot = W * 0.82 / n
         for i in range(n):

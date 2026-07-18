@@ -9,8 +9,8 @@ a permission, a ghostly messenger descends from a portal, shields you, and shows
 the request. When the prompt finishes, a door opens on the far right — escape
 through it to bank a win, or stay and fight.
 
-No Claude? The installer can put a desktop shortcut that runs a standalone
-**4-minute demo** with a simulated prompt instead.
+No Claude? The installer can put a desktop shortcut that runs the game
+standalone: a **4-minute run** driven by a simulated prompt.
 
 ## Install (Windows)
 
@@ -21,7 +21,7 @@ Grab **GraveWaitSetup.exe** from the
 - pick the install folder,
 - **Attach to Claude Code** — adds the launch-on-prompt hooks to your
   `~/.claude/settings.json` (original file backed up; removed on uninstall),
-- create a **desktop shortcut** for the standalone 4-minute demo.
+- create a **desktop shortcut** for the standalone 4-minute game.
 
 No Python required — the installer ships self-contained executables.
 
@@ -30,7 +30,7 @@ No Python required — the installer ships self-contained executables.
 ```
 pip install -r requirements.txt
 python install_hooks.py         # attach to Claude Code (remove: --uninstall)
-python main.py --demo           # or: standalone 4-minute demo, no Claude
+python main.py --play           # or: standalone 4-minute run, no Claude
 python tools\fake_prompt.py     # dev: simulate a ~2 min prompt lifecycle
 ```
 
@@ -48,8 +48,12 @@ python tools\fake_prompt.py     # dev: simulate a ~2 min prompt lifecycle
 | M | mute |
 | hold Q | quit |
 
+The essentials also sit in a small hint line at the bottom of the game itself.
+
 ## Rules
 
+- Pick **EASY** or **HARD** on the title screen with A/D — hard spawns skeletons
+  faster and allows more of them at once. Your choice is remembered.
 - The world reveal IS the progress bar (semi-real: it creeps with Claude's tool
   activity, stalls when Claude is quiet, and completes only when the prompt does).
 - 100 HP, no healing, no pausing. Die and you lose your score — press SPACE to
@@ -81,7 +85,7 @@ a `v*` tag.
 ## Layout
 
 - `main.py` — window (bottom strip, always-on-top, never steals focus), scenes,
-  combat; also the CLI for `--demo`, `--install-hooks`, `--uninstall-hooks`
+  combat; also the CLI for `--play`, `--install-hooks`, `--uninstall-hooks`
 - `game/` — world, player, enemies, claude_npc, progress, events, demo, fx, ui,
   audio, save
 - `hooks/emit_event.py` — Claude Code hook handler; appends to

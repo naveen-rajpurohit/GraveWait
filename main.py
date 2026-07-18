@@ -117,6 +117,7 @@ class Game:
         self.spawner = enemies.Spawner()
         self.scene = TITLE
         self.session = ""
+        self.mode = self.save.mode          # easy | hard, picked on the title
         self.score = 0
         self.last_score = 0
         self.quest = ""
@@ -192,7 +193,13 @@ class Game:
 
     # ------------------------------------------------------------------- input
     def handle_key(self, key, now):
-        if self.scene == TITLE and key == pygame.K_SPACE:
+        if self.scene == TITLE and key in (pygame.K_a, pygame.K_d,
+                                           pygame.K_LEFT, pygame.K_RIGHT):
+            self.mode = "hard" if self.mode == "easy" else "easy"
+            self.save.mode = self.mode
+            self.save.write()
+            self.audio.sfx("jump", 0.4)
+        elif self.scene == TITLE and key == pygame.K_SPACE:
             self.scene = PLAY
             self.spawner.reset_ramp(now)
             self.audio.sfx("jump")
@@ -455,6 +462,7 @@ class Game:
         self.world.draw_front(f)
         self.world.draw_dark(f)
         ui.hud(f, self)
+        ui.controls_hint(f)
         ui.toasts(f, self, now)
         if self.npc and self.npc.present and not self.npc.dialogue_open:
             ui.npc_hint(f, self.npc, now)
@@ -467,6 +475,8 @@ class Game:
         elif self.scene == WIN:
             ui.win_overlay(f, self, now)
         ui.quit_bar(f, self.q_held / QUIT_HOLD_SECONDS)
+        f.fill((86, 76, 110), (0, 0, config.VIEW_W, 1))            # thin frame
+        f.fill((86, 76, 110), (0, config.VIEW_H - 1, config.VIEW_W, 1))
         pygame.transform.scale(f, self.win_size, self.screen)
         pygame.display.flip()
 
@@ -487,7 +497,7 @@ def main():
         except Exception as exc:
             _msgbox(f"GraveWait could not update Claude Code settings:\n{exc}")
         return
-    demo_mode = "--demo" in sys.argv
+    demo_mode = "--play" in sys.argv or "--demo" in sys.argv
     # true per-monitor DPI awareness: exact physical pixels, no OS blur-scaling
     import ctypes
     try:

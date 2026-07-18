@@ -52,6 +52,8 @@ SPAWN_INTERVAL_MIN = 0.95      # at 100%
 SPAWN_RAMP_SECONDS = 20.0      # after a respawn, spawn rate eases back up over this long
 MAX_ENEMIES_MIN = 3
 MAX_ENEMIES_MAX = 12
+HARD_SPAWN_MULT = 0.65         # hard mode: spawns this much sooner...
+HARD_EXTRA_ENEMIES = 4         # ...and this many more allowed at once
 
 # --- claude npc ---
 SHIELD_RADIUS = 46.0

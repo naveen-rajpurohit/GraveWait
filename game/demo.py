@@ -1,14 +1,14 @@
-"""Standalone demo mode: a self-driven 4-minute 'prompt' for people who don't
-have Claude Code. Presents the same poll() interface as events.EventTail, so
-the Game can't tell the difference."""
+"""Standalone mode: a self-driven 4-minute run for people who don't have
+Claude Code. Presents the same poll() interface as events.EventTail, so the
+Game can't tell the difference."""
 import random
 import time
 
 TOOLS = ["Read", "Edit", "Bash", "Grep", "Glob", "Write", "WebSearch"]
 
-DEMO_MESSAGE = ("Demo: when Claude Code needs a permission, this messenger "
-                "delivers it and shields you while you read. Press ENTER to "
-                "close this, and it will return to its portal.")
+DEMO_MESSAGE = ("When Claude Code needs a permission, this messenger delivers "
+                "it and shields you while you read. Press ENTER to close "
+                "this, and it will return to its portal.")
 
 
 class DemoDriver:
@@ -16,8 +16,7 @@ class DemoDriver:
         now = time.time()
         sid = "demo"
         self._queue = [(now, {"event": "prompt_start", "session_id": sid,
-                              "prompt": "Survive the graveyard - 4 minute demo"
-                                        " (no Claude needed)"})]
+                              "prompt": "Survive the graveyard - 4 minutes"})]
         end = now + duration - 7.0     # stop early enough that the door opens
         t = now + 5.0                  # right around the 4:00 mark
         notified = False

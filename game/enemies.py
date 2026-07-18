@@ -311,6 +311,9 @@ class Spawner:
                     * difficulty) * ramp
         cap = round(config.MAX_ENEMIES_MIN +
                     (config.MAX_ENEMIES_MAX - config.MAX_ENEMIES_MIN) * difficulty)
+        if game.mode == "hard":
+            interval *= config.HARD_SPAWN_MULT
+            cap += config.HARD_EXTRA_ENEMIES
         self.cooldown -= dt
         alive = sum(1 for e in game.enemies if not e.dying)
         if self.cooldown > 0 or alive >= cap:

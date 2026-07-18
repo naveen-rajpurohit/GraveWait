@@ -28,7 +28,7 @@ WizardStyle=modern
 
 [Tasks]
 Name: "claudehooks"; Description: "Attach to Claude Code (game launches on every prompt)"
-Name: "desktopicon"; Description: "Desktop shortcut: standalone 4-minute demo (no Claude needed)"
+Name: "desktopicon"; Description: "Desktop shortcut: standalone 4-minute game (no Claude needed)"
 
 [Files]
 Source: "..\dist\GraveWait\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
@@ -36,14 +36,14 @@ Source: "..\ASSETS.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\GraveWait (4-minute demo)"; Filename: "{app}\GraveWait.exe"; Parameters: "--demo"
+Name: "{group}\GraveWait"; Filename: "{app}\GraveWait.exe"; Parameters: "--play"
 Name: "{group}\Attach GraveWait to Claude Code"; Filename: "{app}\GraveWait.exe"; Parameters: "--install-hooks"
 Name: "{group}\Detach GraveWait from Claude Code"; Filename: "{app}\GraveWait.exe"; Parameters: "--uninstall-hooks"
-Name: "{autodesktop}\GraveWait"; Filename: "{app}\GraveWait.exe"; Parameters: "--demo"; Tasks: desktopicon
+Name: "{autodesktop}\GraveWait"; Filename: "{app}\GraveWait.exe"; Parameters: "--play"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\GraveWait.exe"; Parameters: "--install-hooks"; Tasks: claudehooks; Flags: runasoriginaluser
-Filename: "{app}\GraveWait.exe"; Parameters: "--demo"; Description: "Play the 4-minute demo now"; Flags: postinstall nowait skipifsilent unchecked runasoriginaluser
+Filename: "{app}\GraveWait.exe"; Parameters: "--play"; Description: "Play GraveWait now (standalone 4-minute run)"; Flags: postinstall nowait skipifsilent unchecked runasoriginaluser
 
 [UninstallRun]
 Filename: "{app}\GraveWait.exe"; Parameters: "--uninstall-hooks"; RunOnceId: "DetachClaude"
