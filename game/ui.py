@@ -87,11 +87,17 @@ def hud(surf, game):
     pygame.draw.rect(surf, RED, (7, 18, int(80 * hp / config.PLAYER_HP), 6))
     pygame.draw.rect(surf, (110, 104, 122), (6, 17, 82, 8), 1)
     text(surf, f"SCORE: {game.score}", (6, 28), INK, F_MED)
-    # right column: records
+    # right column: records + current mode
     text(surf, f"BEST {game.save.high_score}", (W - 6, 5), DIM, F_SMALL,
          anchor="topright")
     text(surf, f"WINS {game.save.wins}", (W - 6, 16), DIM, F_SMALL,
          anchor="topright")
+    if game.mode == "hard":
+        text(surf, "HARD", (W - 6, 27), (222, 84, 70), F_SMALL,
+             anchor="topright")
+    else:
+        text(surf, "EASY", (W - 6, 27), (110, 165, 110), F_SMALL,
+             anchor="topright")
     # center: sword progress bar + status
     pct = game.progress.value
     text(surf, f"PROGRESS: {pct:.0f}%", (W // 2, 4), GOLD, F_MED, anchor="midtop")
