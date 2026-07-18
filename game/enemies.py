@@ -302,16 +302,19 @@ class Spawner:
         self.ramp_start = now
 
     def update(self, dt, now, game):
+        hard = game.mode == "hard"
         pct = game.progress.value
         difficulty = max(0.0, min(1.0, (pct - 10.0) / 90.0))
-        ramp_t = (now - self.ramp_start) / config.SPAWN_RAMP_SECONDS
+        ramp_secs = config.SPAWN_RAMP_SECONDS * (config.HARD_RAMP_MULT
+                                                 if hard else 1.0)
+        ramp_t = (now - self.ramp_start) / ramp_secs
         ramp = 3.0 - 2.0 * max(0.0, min(1.0, ramp_t))          # 3x..1x interval
         interval = (config.SPAWN_INTERVAL_MAX +
                     (config.SPAWN_INTERVAL_MIN - config.SPAWN_INTERVAL_MAX)
                     * difficulty) * ramp
         cap = round(config.MAX_ENEMIES_MIN +
                     (config.MAX_ENEMIES_MAX - config.MAX_ENEMIES_MIN) * difficulty)
-        if game.mode == "hard":
+        if hard:
             interval *= config.HARD_SPAWN_MULT
             cap += config.HARD_EXTRA_ENEMIES
         self.cooldown -= dt
@@ -319,12 +322,15 @@ class Spawner:
         if self.cooldown > 0 or alive >= cap:
             return
         self.cooldown = interval * random.uniform(0.7, 1.3)
-        kind = self._pick_kind(pct)
+        kind = self._pick_kind(pct + (config.HARD_TIER_SHIFT if hard else 0.0))
         spot = self._pick_spot(game, kind)
         if spot is None:
             return
         x, plat = spot
-        game.enemies.append(Enemy(kind, x, plat, game.world.ground_y))
+        e = Enemy(kind, x, plat, game.world.ground_y)
+        if hard:
+            e.speed *= config.HARD_SPEED_MULT
+        game.enemies.append(e)
 
     def _pick_kind(self, pct):
         # the graveyard mostly coughs up bare bones; ranged stays the seasoning
