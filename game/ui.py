@@ -86,7 +86,17 @@ def hud(surf, game):
     pygame.draw.rect(surf, (26, 20, 30), (6, 17, 82, 8))
     pygame.draw.rect(surf, RED, (7, 18, int(80 * hp / config.PLAYER_HP), 6))
     pygame.draw.rect(surf, (110, 104, 122), (6, 17, 82, 8), 1)
-    text(surf, f"SCORE: {game.score}", (6, 28), INK, F_MED)
+    if game.magic_unlocked:
+        # mana: teal like the bolt; dims while too empty to cast
+        mana = game.player.mana
+        full = mana >= config.MAGIC_COST
+        pygame.draw.rect(surf, (26, 20, 30), (6, 27, 82, 7))
+        pygame.draw.rect(surf, (84, 222, 200) if full else (54, 104, 98),
+                         (7, 28, int(80 * mana / config.MAGIC_MAX), 5))
+        pygame.draw.rect(surf, (110, 104, 122), (6, 27, 82, 7), 1)
+    elif game.progress.status != "idle":
+        text(surf, "magic @40%", (6, 26), (100, 90, 130), F_SMALL)
+    text(surf, f"SCORE: {game.score}", (6, 36), INK, F_MED)
     # right column: records + current mode
     text(surf, f"BEST {game.save.high_score}", (W - 6, 5), DIM, F_SMALL,
          anchor="topright")
@@ -106,8 +116,6 @@ def hud(surf, game):
     if game.quest:
         text(surf, game.quest, (W // 2, 39), (110, 105, 125), F_SMALL,
              anchor="midtop")
-    if not game.magic_unlocked and game.progress.status != "idle":
-        text(surf, "magic @40%", (6, 40), (100, 90, 130), F_SMALL)
 
 
 def toasts(surf, game, now):

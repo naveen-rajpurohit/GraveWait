@@ -50,6 +50,7 @@ class Player:
         self.dash_cd = 0.0
         self.dash_hits = set()        # enemy ids already damaged by this dash
         self.magic_cd = 0.0
+        self.mana = config.MAGIC_MAX
         self.iframes = 0.0
         self.drop_t = 0.0             # dropping through a platform
         self.anim_t = 0.0
@@ -93,8 +94,10 @@ class Player:
         return 0.0 <= self.dash_t <= config.DASH_TIME
 
     def try_magic(self, magic_unlocked, px):
-        if magic_unlocked and self.magic_cd <= 0:
+        if (magic_unlocked and self.magic_cd <= 0
+                and self.mana >= config.MAGIC_COST):
             self.magic_cd = config.MAGIC_COOLDOWN
+            self.mana -= config.MAGIC_COST
             fx.magic_burst(px, self.x + self.W / 2 + 8 * self.facing,
                            self.y + 8, n=6)
             return Bolt(self.x + self.W / 2 + 8 * self.facing, self.y + 8,
@@ -116,6 +119,7 @@ class Player:
         self.attack_cd = max(0.0, self.attack_cd - dt)
         self.dash_cd = max(0.0, self.dash_cd - dt)
         self.magic_cd = max(0.0, self.magic_cd - dt)
+        self.mana = min(config.MAGIC_MAX, self.mana + config.MAGIC_REGEN * dt)
         self.iframes = max(0.0, self.iframes - dt)
         self.drop_t = max(0.0, self.drop_t - dt)
         if self.attack_t >= 0:

@@ -435,8 +435,10 @@ def _outline(surf, color=(8, 6, 14)):
     return out
 
 
-def _enemy_frames(names, ghost=False):
-    frames = _flip_all(_load_half(n) for n in names)
+def _enemy_frames(names, ghost=False, flip=True):
+    frames = [_load_half(n) for n in names]
+    if flip:
+        frames = _flip_all(frames)
     if ghost:
         frames = [_brighten(f) for f in frames]
     return [_outline(f) for f in frames]
@@ -463,10 +465,12 @@ def load_pack():
                                                for i in range(1, 7)])
         _S["enemy_death"] = _enemy_frames([f"enemy-death-{i}.png"
                                            for i in range(1, 6)])
+        # ghosts natively face RIGHT (unlike the skeletons) — no flip
         _S["skel_archer"] = _enemy_frames([f"ghost-{i}.png" for i in range(1, 5)],
-                                          ghost=True)
+                                          ghost=True, flip=False)
         _S["skel_mage"] = _enemy_frames([f"ghost-halo-{i}.png"
-                                         for i in range(1, 5)], ghost=True)
+                                         for i in range(1, 5)], ghost=True,
+                                        flip=False)
         # claude messenger: the hooded (clothed) skeleton as a spectral cyan ghost
         _S["skel_claude"] = [_tint(f, (150, 235, 255)) for f in _S["skel_sword"]]
         _S["grave1"] = [_load_half("stone-1.png")]

@@ -43,7 +43,7 @@ python tools\fake_prompt.py     # dev: simulate a ~2 min prompt lifecycle
 | SPACE | forward dash attack (brief invulnerability, hits everything you pass) |
 | S | crouch (dodges darts) |
 | L | sword (also parries frontal projectiles back at enemies) |
-| P | magic bolt (unlocks at 40% progress; cancels enemy shots mid-air) |
+| P | magic bolt (unlocks at 40% progress; costs mana — the teal bar refills over time; cancels enemy shots mid-air) |
 | ENTER | talk to the messenger / exit the door |
 | M | mute |
 | hold Q | quit |

@@ -118,6 +118,8 @@ class Enemy:
                 self.dead = True
             return
         player = game.player
+        dx = (player.x + player.W / 2) - (self.x + self.W / 2)
+        self.facing = 1 if dx > 0 else -1
         if self.state == "rise":
             if not self.floats and random.random() < dt * 20:
                 fx.dirt_burst(game.px, self.x + self.W / 2, self.base_y)
@@ -128,8 +130,6 @@ class Enemy:
             if self.state_t >= self.rise_dur:
                 self.state = "walk"
             return
-        dx = (player.x + player.W / 2) - (self.x + self.W / 2)
-        self.facing = 1 if dx > 0 else -1
         if self.stun > 0:              # frozen by the blow: no moving, no hitting
             return
         if self.state == "windup":
@@ -232,7 +232,7 @@ class Enemy:
             self._draw_procedural(surf)
 
     def _anchor_blit(self, surf, img, bottom=None, alpha=None):
-        if self.facing < 0 and alpha is None:
+        if self.facing < 0:
             img = sprites.flipped(img)
         if alpha is not None:
             img = img.copy()
